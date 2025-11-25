@@ -19,7 +19,7 @@ export default (env: EnvVariables) => {
     //режим разработки
     mode: env.mode ?? "development", 
     //входной файл
-    entry: path.resolve(__dirname, "src", "index.tsx"), 
+    entry: path.resolve(__dirname, "src", "main.tsx"), 
     //выходной файл
     output: {
       filename: "[name].[contenthash].js", //каждый раз подставляет хэш от контента
@@ -29,7 +29,7 @@ export default (env: EnvVariables) => {
     //подключаемые плагины
     plugins: [ 
       new HtmlWebpackPlugin({
-        template: path.resolve(__dirname, "public", "index.html"),
+        template: path.resolve(__dirname, "index.html"),
       }),
     ],
     module: {
