@@ -1,0 +1,21 @@
+{
+  "compilerOptions": {
+    "outDir": "./dist/",
+    "noImplicitAny": true,
+    "module": "esnext",
+    "target": "es5",
+    "jsx": "react",
+    "allowJs": true,
+    "moduleResolution": "node",
+    //allowSyntheticDefaultImports если у либы нет дефолтного импорта, 
+    //то он автоматом создастся (не надо писать import * as)
+    "allowSyntheticDefaultImports": true, 
+    //esModuleInterop позволяет работать с пакетами через import
+    "esModuleInterop": true 
+  },
+   "ts-node": {
+    "compilerOptions": {
+      "module": "CommonJS"
+    }
+  }
+}
