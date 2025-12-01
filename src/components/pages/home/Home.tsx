@@ -1,14 +1,10 @@
-import { FC, useMemo, useState } from 'react';
+import { FC, useMemo } from 'react';
 import React from 'react';
 import {
 	Box,
 	Grid,
 	CircularProgress,
 	Container,
-	Card,
-	CardMedia,
-	CardContent,
-	Typography,
 	Button,
 	ButtonGroup
 } from '@mui/material';
@@ -16,6 +12,7 @@ import {
 	useGetProductItemQuery,
 	useGetProductsQuery
 } from '../../../store/products/productApi';
+import ProductItem from '../../ui/ProductItem';
 
 const Home: FC = () => {
 	const { data, isLoading, error } = useGetProductsQuery();
@@ -46,68 +43,7 @@ const Home: FC = () => {
 					<Box my={4}>
 						<Grid container spacing={4}>
 							{data?.products.map(product => (
-								<Grid size={3} key={product.id}>
-									<Card
-										sx={{
-											height: '100%',
-											display: 'flex',
-											flexDirection: 'column',
-											justifyContent: 'space-between'
-										}}
-									>
-										<CardMedia
-											component="img"
-											height="160"
-											image={product.thumbnail}
-											alt={product.title}
-											sx={{ objectFit: 'contain', p: 1 }}
-										/>
-										<CardContent sx={{ flexGrow: 1 }}>
-											<Typography
-												gutterBottom
-												variant="subtitle1"
-												component="div"
-											>
-												{product.title}
-											</Typography>
-											<Typography
-												variant="body2"
-												color="text.secondary"
-												sx={{ mb: 1 }}
-											>
-												{product.brand} • {product.category}
-											</Typography>
-											<Box
-												sx={{ display: 'flex', alignItems: 'center', gap: 1 }}
-											>
-												<Typography variant="h6" color="primary">
-													${product.price}
-												</Typography>
-												{product.discountPercentage > 0 && (
-													<Typography
-														variant="body2"
-														color="text.secondary"
-														sx={{ textDecoration: 'line-through' }}
-													>
-														$
-														{(
-															product.price /
-															(1 - product.discountPercentage / 100)
-														).toFixed(2)}
-													</Typography>
-												)}
-											</Box>
-											<Typography variant="body2" color="warning.main">
-												★ {product.rating}
-											</Typography>
-										</CardContent>
-
-										{/* Можно добавить кнопку "В корзину", если реализуете корзину позже */}
-										{/* <Button size="small" variant="outlined" fullWidth>
-        В корзину
-      </Button> */}
-									</Card>
-								</Grid>
+								<ProductItem product={product} />
 							))}
 						</Grid>
 					</Box>
