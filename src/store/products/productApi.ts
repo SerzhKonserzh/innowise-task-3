@@ -6,8 +6,9 @@ export const productApi = createApi({
 	baseQuery: fetchBaseQuery({ baseUrl: 'https://dummyjson.com/' }), //базовый путь
 	endpoints: build => ({
 		getProducts: build.query<IProducts, void>({ query: () => 'products' }), //то, что добавляется к базовому пути
-		getProductItem: build.query<IProduct, number>({ query: (id: number) => `products/${id}`})
+		getProductItem: build.query<IProduct, number>({ query: (id) => `products/${id}`}),
+		getProductsByCategory: build.query<IProducts, string>({ query: (category) => `products/category/${category}`}),
 	})
 });
 
-export const {useGetProductsQuery, useGetProductItemQuery} = productApi;
+export const {useGetProductsQuery, useGetProductItemQuery, useGetProductsByCategoryQuery} = productApi;

@@ -11,8 +11,8 @@ import {
 import {
 	useGetProductItemQuery,
 	useGetProductsQuery
-} from '../../../store/products/productApi';
-import ProductItem from '../../ui/ProductItem';
+} from '../../store/products/productApi';
+import ProductCard from '../ui/ProductCard';
 import { Link } from 'react-router';
 
 const Home: FC = () => {
@@ -37,7 +37,7 @@ const Home: FC = () => {
 					<Box my={4} sx={{ display: 'flex', justifyContent: 'center' }}>
 						<ButtonGroup variant="contained" aria-label="Basic button group">
 							{uniqueCategories.map(category => (
-								<Button variant="contained" component={Link} to={`/about`}>
+								<Button variant="contained" component={Link} to={`/`}>
 									{category}
 								</Button>
 							))}
@@ -46,7 +46,7 @@ const Home: FC = () => {
 					<Box my={4}>
 						<Grid container spacing={4}>
 							{data?.products.map(product => (
-								<ProductItem product={product} />
+								<ProductCard product={product} />
 							))}
 						</Grid>
 					</Box>

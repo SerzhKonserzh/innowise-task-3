@@ -44,7 +44,7 @@ function MainAppBar() {
 	return (
 		<AppBar position="static" sx={{ bgcolor: 'inherit', boxShadow: 'none' }}>
 			<Toolbar disableGutters>
-				<Button>
+				<Button component={Link} to={`/`}>
 					<StorefrontIcon  sx={{ display: { xs: 'none', md: 'flex' }, mr: 1 }} />
 				<Typography
 					variant="h6"

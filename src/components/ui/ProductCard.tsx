@@ -10,8 +10,9 @@ import {
 	Button
 } from '@mui/material';
 import { IProduct } from '../../store/products/productTypes';
+import { Link } from 'react-router';
 
-const ProductItem: FC<{ product: IProduct; size?: number }> = ({
+const ProductCard: FC<{ product: IProduct; size?: number }> = ({
 	product,
 	size = 3
 }) => {
@@ -24,7 +25,7 @@ const ProductItem: FC<{ product: IProduct; size?: number }> = ({
 				borderRadius: '5px'
 			}}
 		>
-			<Button fullWidth sx={{
+			<Button component={Link} to={`/product/${product.id}`} fullWidth sx={{
 						height: '100%',
             p: '0'
 					}}>
@@ -79,4 +80,4 @@ const ProductItem: FC<{ product: IProduct; size?: number }> = ({
 	);
 };
 
-export default ProductItem;
+export default ProductCard;

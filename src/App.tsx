@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import Button from '@mui/material/Button';
-import Home from './components/pages/home/Home';
+import Home from './components/pages/Home';
 import { Provider } from 'react-redux';
 import { store } from './store/store';
 import Header from './components/Header';
