@@ -13,11 +13,12 @@ import {
 	useGetProductsQuery
 } from '../../../store/products/productApi';
 import ProductItem from '../../ui/ProductItem';
+import { Link } from 'react-router';
 
 const Home: FC = () => {
 	const { data, isLoading, error } = useGetProductsQuery();
 
-	const uniqueCategories = useMemo(() => {
+	const uniqueCategories: string[] = useMemo(() => {
 		return Array.from(new Set(data?.products.map(product => product.category)));
 	}, [data]);
 
@@ -36,7 +37,9 @@ const Home: FC = () => {
 					<Box my={4} sx={{ display: 'flex', justifyContent: 'center' }}>
 						<ButtonGroup variant="contained" aria-label="Basic button group">
 							{uniqueCategories.map(category => (
-								<Button variant='contained'>{category}</Button>
+								<Button variant="contained" component={Link} to={`/about`}>
+									{category}
+								</Button>
 							))}
 						</ButtonGroup>
 					</Box>

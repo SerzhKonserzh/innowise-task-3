@@ -13,6 +13,7 @@ import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import StorefrontIcon from '@mui/icons-material/Storefront';
 import LocalGroceryStoreIcon from '@mui/icons-material/LocalGroceryStore';
 import { Grid } from '@mui/material';
+import { Link } from 'react-router';
 
 const pages = ['Catalog'];
 const settings = ['Logout'];
@@ -43,7 +44,8 @@ function MainAppBar() {
 	return (
 		<AppBar position="static" sx={{ bgcolor: 'inherit', boxShadow: 'none' }}>
 			<Toolbar disableGutters>
-				<StorefrontIcon sx={{ display: { xs: 'none', md: 'flex' }, mr: 1 }} />
+				<Button>
+					<StorefrontIcon  sx={{ display: { xs: 'none', md: 'flex' }, mr: 1 }} />
 				<Typography
 					variant="h6"
 					noWrap
@@ -61,7 +63,7 @@ function MainAppBar() {
 				>
 					Web Store
 				</Typography>
-
+				</Button>
 				<Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
 					<IconButton
 						size="large"

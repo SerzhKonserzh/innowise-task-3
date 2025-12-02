@@ -6,6 +6,8 @@ import { store } from './store/store';
 import Header from './components/Header';
 import { createTheme, CssBaseline, ThemeProvider } from '@mui/material';
 import { deepPurple, purple } from '@mui/material/colors';
+import { RouterProvider } from 'react-router';
+import { router } from './components/routes/AppRouter';
 
 declare module '@mui/material/Button' {
 	interface ButtonPropsVariantOverrides {
@@ -57,9 +59,8 @@ export default function App() {
 	return (
 		<Provider store={store}>
 			<ThemeProvider theme={theme}>
+				<RouterProvider router={router}/>
 				<CssBaseline />
-				<Header />
-				<Home />
 			</ThemeProvider>
 		</Provider>
 	);
