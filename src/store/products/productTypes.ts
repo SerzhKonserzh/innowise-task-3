@@ -30,6 +30,10 @@ export interface IProduct {
   thumbnail: string;
 }
 
+export interface IProductCart extends IProduct {
+  quantity: number
+}
+
 interface IMeta {
   createdAt: string;
   updatedAt: string;

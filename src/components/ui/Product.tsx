@@ -10,8 +10,16 @@ import {
 } from '@mui/material';
 import { IProduct } from '../../store/products/productTypes';
 import { Link } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { addItemToCart } from '../../store/user/userSlice';
 
 const Product: FC<{ product: IProduct }> = ({ product }) => {
+  const dispatch = useDispatch();
+
+  const addToCart = () => {
+    dispatch(addItemToCart(product));
+  }
+
 	return (
 		<Container>
 			<Box my={4}>
@@ -28,7 +36,7 @@ const Product: FC<{ product: IProduct }> = ({ product }) => {
 				<Typography variant="h6" color="primary">
 					${product.price}
 				</Typography>
-				<Button variant="outlined" sx={{ mt: 2 }}>
+				<Button onClick={addToCart} variant="outlined" sx={{ mt: 2 }}>
 					Add to cart
 				</Button>
 				<Button component={Link} to="/" variant="outlined" sx={{ mt: 2 }}>

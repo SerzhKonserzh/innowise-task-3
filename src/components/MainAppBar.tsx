@@ -16,7 +16,7 @@ import { Grid } from '@mui/material';
 import { Link } from 'react-router';
 
 const pages = ['Catalog'];
-const settings = ['Logout'];
+const settings = ['Login'];
 
 function MainAppBar() {
 	const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(
@@ -163,7 +163,7 @@ function MainAppBar() {
 							onClose={handleCloseUserMenu}
 						>
 							{settings.map(setting => (
-								<MenuItem key={setting} onClick={handleCloseUserMenu}>
+								<MenuItem key={setting} onClick={handleCloseUserMenu} component={Link} to={'/login'}>
 									<Typography sx={{ textAlign: 'center' }}>
 										{setting}
 									</Typography>
