@@ -1,4 +1,3 @@
-import * as React from 'react';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
@@ -12,19 +11,26 @@ import MenuItem from '@mui/material/MenuItem';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import StorefrontIcon from '@mui/icons-material/Storefront';
 import LocalGroceryStoreIcon from '@mui/icons-material/LocalGroceryStore';
-import { Grid } from '@mui/material';
+import { Avatar, Grid } from '@mui/material';
 import { Link } from 'react-router';
+import React, { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
+import { TypeRootState } from '../store/store';
 
 const pages = ['Catalog'];
-const settings = ['Login'];
 
 function MainAppBar() {
-	const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(
-		null
-	);
-	const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(
-		null
-	);
+	const [anchorElNav, setAnchorElNav] = useState<null | HTMLElement>(null);
+	const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
+
+	const [info, setInfo] = useState({ username: 'Guest', image: '' });
+	const { currentUser, isAuthenticated } = useSelector((state: TypeRootState) => state.user);
+
+	useEffect(() => {
+		if (!currentUser) return;
+		console.log(currentUser);
+		setInfo(currentUser);
+	}, [currentUser]);
 
 	const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
 		setAnchorElNav(event.currentTarget);
@@ -45,24 +51,22 @@ function MainAppBar() {
 		<AppBar position="static" sx={{ bgcolor: 'inherit', boxShadow: 'none' }}>
 			<Toolbar disableGutters>
 				<Button component={Link} to={`/`}>
-					<StorefrontIcon  sx={{ display: { xs: 'none', md: 'flex' }, mr: 1 }} />
-				<Typography
-					variant="h6"
-					noWrap
-					component="a"
-					href="#app-bar-with-responsive-menu"
-					sx={{
-						mr: 2,
-						display: { xs: 'none', md: 'flex' },
-						fontFamily: 'monospace',
-						fontWeight: 700,
-						letterSpacing: '.3rem',
-						color: 'inherit',
-						textDecoration: 'none'
-					}}
-				>
-					Web Store
-				</Typography>
+					<StorefrontIcon sx={{ display: { xs: 'none', md: 'flex' }, mr: 1 }} />
+					<Typography
+						variant="h6"
+						noWrap
+						sx={{
+							mr: 2,
+							display: { xs: 'none', md: 'flex' },
+							fontFamily: 'monospace',
+							fontWeight: 700,
+							letterSpacing: '.3rem',
+							color: 'inherit',
+							textDecoration: 'none'
+						}}
+					>
+						Web Store
+					</Typography>
 				</Button>
 				<Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
 					<IconButton
@@ -102,8 +106,6 @@ function MainAppBar() {
 				<Typography
 					variant="h5"
 					noWrap
-					component="a"
-					href="#app-bar-with-responsive-menu"
 					sx={{
 						mr: 2,
 						display: { xs: 'flex', md: 'none' },
@@ -128,12 +130,16 @@ function MainAppBar() {
 						</Button>
 					))}
 				</Box>
-				<Grid sx={{ flexGrow: 0, display: 'flex', gap: '20px'}}>
-					<Box >
+				<Grid sx={{ flexGrow: 0, display: 'flex', gap: '20px' }}>
+					<Box>
 						<Tooltip title="Open cart">
 							<IconButton sx={{ p: 0 }}>
 								<LocalGroceryStoreIcon
-									sx={{ color: 'white', width: {md: '40px', xs: '30px'}, height: 'auto' }}
+									sx={{
+										color: 'white',
+										width: { md: '40px', xs: '30px' },
+										height: 'auto'
+									}}
 								/>
 							</IconButton>
 						</Tooltip>
@@ -141,9 +147,7 @@ function MainAppBar() {
 					<Box>
 						<Tooltip title="Open settings">
 							<IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-								<AccountCircleIcon
-									sx={{ color: 'white', width: {md: '40px', xs: '30px'}, height: 'auto' }}
-								/>
+								<Avatar alt="Remy Sharp" src={info.image} />
 							</IconButton>
 						</Tooltip>
 						<Menu
@@ -162,13 +166,23 @@ function MainAppBar() {
 							open={Boolean(anchorElUser)}
 							onClose={handleCloseUserMenu}
 						>
-							{settings.map(setting => (
-								<MenuItem key={setting} onClick={handleCloseUserMenu} component={Link} to={'/login'}>
-									<Typography sx={{ textAlign: 'center' }}>
-										{setting}
-									</Typography>
+							{isAuthenticated ? (
+								<MenuItem
+									onClick={handleCloseUserMenu}
+									component={Link}
+									to={'/login'}
+								>
+									<Typography sx={{ textAlign: 'center' }}>Logout</Typography>
 								</MenuItem>
-							))}
+							) : (
+								<MenuItem
+									onClick={handleCloseUserMenu}
+									component={Link}
+									to={'/login'}
+								>
+									<Typography sx={{ textAlign: 'center' }}>Login</Typography>
+								</MenuItem>
+							)}
 						</Menu>
 					</Box>
 				</Grid>

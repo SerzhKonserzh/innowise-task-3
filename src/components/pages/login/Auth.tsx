@@ -15,6 +15,10 @@ import Stack from '@mui/material/Stack';
 import MuiCard from '@mui/material/Card';
 import { styled } from '@mui/material/styles';
 import { ILoginRequest } from '../../../store/user/userTypes';
+import { useLoginUserMutation } from '../../../store/user/userApi';
+import { useDispatch } from 'react-redux';
+import { loginUser } from '../../../store/user/userSlice';
+import { useNavigate } from 'react-router';
 
 const Card = styled(MuiCard)(({ theme }) => ({
   display: 'flex',
@@ -64,12 +68,33 @@ const Auth: FC = (props: { disableCustomTheme?: boolean }) => {
     password: ''
   })
 
+  const [login, {isLoading, error}] = useLoginUserMutation();
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setCredentials(prev => ({
       ...prev,
       [name]: value
     }));
+  }
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    try {
+      const {data} = await login(credentials);
+      dispatch(loginUser(data));
+
+      navigate("/");
+    } catch (err) {
+      console.error('Login failed:', err);
+    }
+    const isNotEmpty = Object.values(credentials).every(cred => cred);
+
+    if(isNotEmpty) return;
+
+
   }
 
   return (
@@ -84,6 +109,7 @@ const Auth: FC = (props: { disableCustomTheme?: boolean }) => {
           </Typography>
           <Box
             component="form"
+            onSubmit={handleSubmit}
             noValidate
             sx={{
               display: 'flex',

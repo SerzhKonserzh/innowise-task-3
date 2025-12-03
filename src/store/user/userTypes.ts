@@ -18,6 +18,7 @@ export interface IAuthResponse {
 }
 
 export interface IAuthState {
+  currentUser: IAuthResponse | null;
   isAuthenticated: boolean;
   isLoading: boolean;
   cart: IProductCart[];
