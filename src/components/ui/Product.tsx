@@ -2,47 +2,153 @@ import { FC } from 'react';
 import React from 'react';
 import {
 	Box,
+	Container,
+	Grid,
 	Typography,
 	Button,
-	CardMedia,
-	Container,
-	CircularProgress
+	Rating,
+	Chip,
+	Divider,
+	useMediaQuery,
+	useTheme,
+	List,
+	ListItem
 } from '@mui/material';
 import { IProduct } from '../../store/products/productTypes';
 import { Link } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { addItemToCart } from '../../store/user/userSlice';
+import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
+import ShareIcon from '@mui/icons-material/Share';
 
 const Product: FC<{ product: IProduct }> = ({ product }) => {
-  const dispatch = useDispatch();
+	const theme = useTheme();
+	const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+	const dispatch = useDispatch();
 
-  const addToCart = () => {
-    dispatch(addItemToCart(product));
-  }
+	const addToCart = () => {
+		dispatch(addItemToCart(product));
+	};
 
 	return (
-		<Container>
-			<Box my={4}>
-				<CardMedia
-					component="img"
-					height="400"
-					image={product.thumbnail}
-					alt={product.title}
-				/>
-				<Typography variant="h4" my={2}>
-					{product.title}
-				</Typography>
-				<Typography variant="body1">{product.description}</Typography>
-				<Typography variant="h6" color="primary">
-					${product.price}
-				</Typography>
-				<Button onClick={addToCart} variant="outlined" sx={{ mt: 2 }}>
-					Add to cart
-				</Button>
-				<Button component={Link} to="/" variant="outlined" sx={{ mt: 2 }}>
-					Back to catalog
-				</Button>
-			</Box>
+		// <Container>
+		// 	<Button sx={{ mb: 2 }} component={Link} to="/">
+		// 		← Back
+		// 	</Button>
+		// 	<Box display="flex" gap={4}>
+		// 		<CardMedia
+		// 			component="img"
+		// 			image={product.thumbnail}
+		// 			alt={product.title}
+		// 			sx={{ width: 300, height: 300, objectFit: 'contain', border: '1px solid black' }}
+		// 		/>
+		// 		<Box>
+		// 			<Typography variant="h4">{product.title}</Typography>
+		// 			<Typography variant="h6" color="primary">
+		// 				${product.price}
+		// 			</Typography>
+		// 			<Typography sx={{ mt: 2 }}>{product.description}</Typography>
+		// 			<Button
+		// 				variant="contained"
+		// 				color="primary"
+		// 				sx={{ mt: 3 }}
+		// 				onClick={addToCart}
+		// 			>
+		// 				Add to cart
+		// 			</Button>
+		// 		</Box>
+		// 	</Box>
+		// </Container>
+		<Container maxWidth="lg" sx={{ py: 4 }}>
+			<Grid
+				container
+				spacing={4}
+				sx={{ textAlign: isMobile ? 'center' : 'left' }}
+			>
+				<Grid
+					size={{ xs: 12, md: 6 }}
+					sx={{
+						display: isMobile ? 'flex' : 'block',
+						justifyContent: isMobile ? 'center' : 'start'
+					}}
+				>
+					<Box
+						sx={{
+							display: 'flex',
+							flexDirection: isMobile ? 'row' : 'column',
+							gap: 1
+						}}
+					>
+						<Box
+							component="img"
+							src={product.images[0]}
+							alt={product.title}
+							sx={{
+								width: '100%',
+								maxWidth: isMobile ? 300 : 'z0%',
+								borderRadius: 2,
+								objectFit: 'cover',
+								aspectRatio: '1 / 1',
+								border: `2px solid ${theme.palette.primary.main}`
+							}}
+						/>
+					</Box>
+				</Grid>
+				<Grid size={{ xs: 12, md: 6 }}>
+					<Typography variant="h1" component="h1" gutterBottom>
+						{product.title}
+					</Typography>
+
+					<Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 2, justifyContent: isMobile ? 'center' : 'start' }}>
+						<Rating value={product.rating} readOnly precision={0.5} />
+						<Typography variant="body2" color="text.secondary">
+							({product.reviews.length} reviews)
+						</Typography>
+					</Box>
+
+					<Typography variant="h2" color="primary" gutterBottom>
+						${product.price.toFixed(2)}
+					</Typography>
+
+					{product.stock ? (
+						<Chip
+							label={`${product.stock} left`}
+							color="success"
+							size="small"
+							sx={{ mb: 2 }}
+						/>
+					) : (
+						<Chip
+							label="Нет в наличии"
+							color="error"
+							size="small"
+							sx={{ mb: 2 }}
+						/>
+					)}
+
+					<Typography variant="body1">{product.description}</Typography>
+
+					<Typography variant="subtitle1" fontWeight="600" sx={{ mb: 1 }}>
+						Tags:
+					</Typography>
+					<List sx={{ padding: '0 0 16px', display: 'flex', flexDirection: 'column'}}>
+						{product.tags.map((tag, id) => (
+							<ListItem
+								key={id}
+								sx={{ textTransform: 'uppercase', padding: 0,  justifyContent: isMobile ? 'center' : 'start'  }}
+							>
+								<Typography variant="body2">{tag}</Typography>
+							</ListItem>
+						))}
+					</List>
+
+					<Box sx={{ display: 'flex', gap: 2, flexWrap: 'wrap', justifyContent: isMobile ? 'center' : 'start' }}>
+						<Button variant="contained" color="primary" size="large" onClick={addToCart}>
+							Add to cart
+						</Button>
+					</Box>
+				</Grid>
+			</Grid>
 		</Container>
 	);
 };

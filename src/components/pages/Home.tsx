@@ -37,13 +37,13 @@ const Home: FC = () => {
 					<Box my={4} sx={{ display: 'flex', justifyContent: 'center' }}>
 						<ButtonGroup variant="contained" aria-label="Basic button group">
 							{uniqueCategories.map(category => (
-								<Button variant="contained" component={Link} to={`/`}>
+								<Button key="" variant="contained" component={Link} to={`/`}>
 									{category}
 								</Button>
 							))}
 						</ButtonGroup>
 					</Box>
-					<Box my={4}>
+					<Box my={4} >
 						<Grid container spacing={4}>
 							{data?.products.map(product => (
 								<ProductCard product={product} />

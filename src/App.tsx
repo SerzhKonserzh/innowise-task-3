@@ -18,48 +18,32 @@ declare module '@mui/material/Button' {
 export default function App() {
 	const theme = createTheme({
 		palette: {
-			primary: deepPurple,
-			secondary: purple
-		}
-		// components: {
-		// 	MuiButton: {
-		// 		styleOverrides: {
-		// 			root: {
-		// 				variants: [
-		// 					{
-		// 						props: { variant: 'category' },
-		// 						style: {
-		// 							backgroundColor: 'transparent',
-		//               borderColor:'red',
-		//               color: 'red'
-		// 						}
-		// 					}
-		// 				]
-		// 			}
-		// 		}
-		// 	},
-		//   MuiButtonGroup: {
-		// 		styleOverrides: {
-		// 			root: {
-		// 				variants: [
-		// 					{
-		// 						props: { variant: 'contained' },
-		// 						style: {
-		// 							boxShadow: 'none',
-		//               border:'solid 1px red',
-		// 						}
-		// 					}
-		// 				]
-		// 			}
-		// 		}
-		// 	}
-		// }
+			primary: {
+				main: '#5D3A9B' // темно-фиолетовый
+			},
+			secondary: {
+				main: '#8A66C2' // светло-фиолетовый (акцент)
+			},
+			background: {
+				default: '#F9F7FC', // очень светлый лавандовый фон
+				paper: '#FFFFFF'
+			},
+			text: {
+				primary: '#2E294E', // тёмно-синий для основного текста
+				secondary: '#5D5D5D'
+			}
+		},
+		typography: {
+			h1: { fontSize: '2.5rem', fontWeight: 700 },
+			h2: { fontSize: '2rem', fontWeight: 600 },
+			body1: { fontSize: '1rem' }
+		},
 	});
 
 	return (
 		<Provider store={store}>
 			<ThemeProvider theme={theme}>
-				<RouterProvider router={router}/>
+				<RouterProvider router={router} />
 				<CssBaseline />
 			</ThemeProvider>
 		</Provider>
