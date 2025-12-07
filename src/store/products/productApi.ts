@@ -8,7 +8,12 @@ export const productApi = createApi({
 		getProducts: build.query<IProducts, void>({ query: () => 'products' }), //то, что добавляется к базовому пути
 		getProductItem: build.query<IProduct, number>({ query: (id) => `products/${id}`}),
 		getProductsByCategory: build.query<IProducts, string>({ query: (category) => `products/category/${category}`}),
+		searchProducts: build.query<IProduct[], string>({
+      query: (item) => `/products/search?q=${encodeURIComponent(item)}`,
+      // Опционально: трансформируем ответ, чтобы брать только нужное
+      transformResponse: (response: IProducts ) => response.products,
+    }),
 	})
 });
 
-export const {useGetProductsQuery, useGetProductItemQuery, useGetProductsByCategoryQuery} = productApi;
+export const {useGetProductsQuery, useGetProductItemQuery, useGetProductsByCategoryQuery, useSearchProductsQuery} = productApi;
