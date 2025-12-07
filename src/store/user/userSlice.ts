@@ -32,10 +32,15 @@ const userSlice = createSlice({
       state.currentUser = {...payload};
       state.isAuthenticated = true;
       state.isLoading = false;
-    }
+    },
+		logoutUser: (state) => {
+      state.currentUser = null;
+      state.isAuthenticated = false;
+      state.isLoading = false;
+    },
 	}
 });
 
-export const { addItemToCart, loginUser } = userSlice.actions;
+export const { addItemToCart, loginUser, logoutUser } = userSlice.actions;
 
 export default userSlice.reducer;

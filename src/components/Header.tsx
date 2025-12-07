@@ -23,12 +23,14 @@ import { Link, useNavigate } from 'react-router';
 import { IProduct } from '../store/products/productTypes';
 import { useDebounce } from '../hooks/useDebounce';
 import LocalGroceryStoreIcon from '@mui/icons-material/LocalGroceryStore';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { TypeRootState } from '../store/store';
 import StorefrontIcon from '@mui/icons-material/Storefront';
+import { logoutUser } from '../store/user/userSlice';
 
 const Header = () => {
 	const navigate = useNavigate();
+	const dispatch = useDispatch();
 	const theme = useTheme();
 	const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
@@ -148,7 +150,9 @@ const Header = () => {
 						>
 							{isAuthenticated ? (
 								<MenuItem
-									onClick={handleCloseUserMenu}
+									onClick={() => {
+										dispatch(logoutUser());
+									}}
 									component={Link}
 									to={'/login'}
 								>
