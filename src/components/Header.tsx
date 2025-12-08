@@ -14,7 +14,10 @@ import {
 	IconButton,
 	Avatar,
 	Menu,
-	MenuItem
+	MenuItem,
+	Badge,
+	styled,
+	badgeClasses
 } from '@mui/material';
 import { Autocomplete, TextField } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
@@ -28,6 +31,13 @@ import { TypeRootState } from '../store/store';
 import StorefrontIcon from '@mui/icons-material/Storefront';
 import { logoutUser } from '../store/user/userSlice';
 
+const CartBadge = styled(Badge)`
+	& .${badgeClasses.badge} {
+		top: 5px;
+		right: -6px;
+	}
+`;
+
 const Header = () => {
 	const navigate = useNavigate();
 	const dispatch = useDispatch();
@@ -37,7 +47,7 @@ const Header = () => {
 	const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
 
 	const [info, setInfo] = useState({ username: 'Guest', image: '' });
-	const { currentUser, isAuthenticated } = useSelector(
+	const { currentUser, isAuthenticated, cart } = useSelector(
 		(state: TypeRootState) => state.user
 	);
 
@@ -78,12 +88,12 @@ const Header = () => {
 	return (
 		<AppBar
 			position="sticky"
-			sx={{ backgroundColor: 'background.paper', boxShadow: 1 }}
+			sx={{ backgroundColor: 'background.paper', boxShadow: 1, py: 1 }}
 		>
 			<Toolbar
 				sx={{
-					display: 'flex',
-					justifyContent: 'space-between',
+					display: 'grid',
+					gridTemplateColumns: isMobile ? 'auto 1fr' : 'auto 1fr auto',
 					gap: 2,
 					width: '100%'
 				}}
@@ -105,18 +115,33 @@ const Header = () => {
 						</IconButton>
 					)}
 				</Button>
-
-				<Grid sx={{ flexGrow: 0, display: 'flex', gap: '20px' }}>
+				<Box
+					sx={{
+						flexGrow: 0,
+						display: 'flex',
+						gap: '20px',
+						justifyContent: 'flex-end'
+					}}
+				>
 					<Box>
 						<Tooltip title="Open cart">
-							<IconButton sx={{ p: 0 }}>
-								<LocalGroceryStoreIcon
-									sx={{
-										color: 'primary.main',
-										width: 40,
-										height: 'auto'
-									}}
-								/>
+							<IconButton sx={{ p: 0 }} component={Link} to={'/cart'}>
+								<CartBadge
+									badgeContent={
+										isAuthenticated
+											? cart.reduce((sum, item) => sum + item.quantity, 0)
+											: 0
+									}
+									color="primary"
+								>
+									<LocalGroceryStoreIcon
+										sx={{
+											color: 'primary.main',
+											width: 40,
+											height: 'auto'
+										}}
+									/>
+								</CartBadge>
 							</IconButton>
 						</Tooltip>
 					</Box>
@@ -169,112 +194,113 @@ const Header = () => {
 							)}
 						</Menu>
 					</Box>
-					<Box sx={{ width: isMobile ? 120 : 300 }}>
-						<Autocomplete
-							freeSolo
-							open={open && inputValue.trim().length > 0}
-							onOpen={() => setOpen(true)}
-							onClose={() => setOpen(false)}
-							options={products}
-							getOptionLabel={option =>
-								typeof option === 'string' ? option : option.title
+				</Box>
+
+				<Box sx={{ width: isMobile ? '100%' : 300, gridColumn: isMobile ? 'span 2' : 'span 1' }}>
+					<Autocomplete
+						freeSolo
+						open={open && inputValue.trim().length > 0}
+						onOpen={() => setOpen(true)}
+						onClose={() => setOpen(false)}
+						options={products}
+						getOptionLabel={option =>
+							typeof option === 'string' ? option : option.title
+						}
+						inputValue={inputValue}
+						onInputChange={(_, newInputValue, reason) => {
+							if (reason === 'reset') {
+								setOpen(false);
+								setInputValue('');
+								return;
 							}
-							inputValue={inputValue}
-							onInputChange={(_, newInputValue, reason) => {
-								if (reason === 'reset') {
-									setOpen(false);
-									setInputValue('');
-									return;
-								}
 
-								setInputValue(newInputValue);
+							setInputValue(newInputValue);
 
-								if (newInputValue.trim().length > 0) {
-									setOpen(true);
-								} else {
-									setOpen(false);
-								}
-							}}
-							onChange={handleSelect}
-							filterOptions={x => x}
-							renderInput={params => (
-								<TextField
-									{...params}
-									placeholder="Поиск товаров..."
-									InputProps={{
-										...params.InputProps,
-										startAdornment: (
-											<SearchIcon
-												fontSize="small"
-												sx={{ mr: 1, color: 'primary.main' }}
-											/>
-										),
-										endAdornment: (
-											<>
-												{isFetching ? (
-													<CircularProgress color="inherit" size={20} />
-												) : null}
-												{params.InputProps.endAdornment}
-											</>
-										),
-										sx: {
-											backgroundColor: 'background.default',
-											borderRadius: 2
-										}
-									}}
-									variant="outlined"
-									size="small"
-								/>
-							)}
-							renderOption={(props, option) => (
-								<li {...props} key={option.id}>
-									<Box
-										sx={{
-											display: 'flex',
-											alignItems: 'center',
-											gap: 1.5,
-											py: 1,
-											width: '100%'
-										}}
-									>
-										<Box
-											component="img"
-											src={option.thumbnail}
-											alt={option.title}
-											sx={{
-												width: 40,
-												height: 40,
-												objectFit: 'contain',
-												borderRadius: 1,
-												border: '1px solid',
-												borderColor: 'divider'
-											}}
+							if (newInputValue.trim().length > 0) {
+								setOpen(true);
+							} else {
+								setOpen(false);
+							}
+						}}
+						onChange={handleSelect}
+						filterOptions={x => x}
+						renderInput={params => (
+							<TextField
+								{...params}
+								placeholder="Поиск товаров..."
+								InputProps={{
+									...params.InputProps,
+									startAdornment: (
+										<SearchIcon
+											fontSize="small"
+											sx={{ mr: 1, color: 'primary.main' }}
 										/>
-										<Box>
-											<Typography variant="body2" fontWeight="500" noWrap>
-												{option.title}
-											</Typography>
-											<Typography variant="caption" color="text.secondary">
-												${option.price}
-											</Typography>
-										</Box>
+									),
+									endAdornment: (
+										<>
+											{isFetching ? (
+												<CircularProgress color="inherit" size={20} />
+											) : null}
+											{params.InputProps.endAdornment}
+										</>
+									),
+									sx: {
+										backgroundColor: 'background.default',
+										borderRadius: 2
+									}
+								}}
+								variant="outlined"
+								size="small"
+							/>
+						)}
+						renderOption={(props, option) => (
+							<li {...props} key={option.id}>
+								<Box
+									sx={{
+										display: 'flex',
+										alignItems: 'center',
+										gap: 1.5,
+										py: 1,
+										width: '100%'
+									}}
+								>
+									<Box
+										component="img"
+										src={option.thumbnail}
+										alt={option.title}
+										sx={{
+											width: 40,
+											height: 40,
+											objectFit: 'contain',
+											borderRadius: 1,
+											border: '1px solid',
+											borderColor: 'divider'
+										}}
+									/>
+									<Box>
+										<Typography variant="body2" fontWeight="500" noWrap>
+											{option.title}
+										</Typography>
+										<Typography variant="caption" color="text.secondary">
+											${option.price}
+										</Typography>
 									</Box>
-								</li>
-							)}
-							sx={{
-								width: '100%',
-								'& .MuiAutocomplete-popper': {
-									backgroundColor: 'background.paper',
-									border: '1px solid',
-									borderColor: 'divider',
-									borderRadius: 1,
-									mt: 0.5,
-									zIndex: theme.zIndex.modal
-								}
-							}}
-						/>
-					</Box>
-				</Grid>
+								</Box>
+							</li>
+						)}
+						sx={{
+							width: '100%',
+							'& .MuiAutocomplete-popper': {
+								backgroundColor: 'background.paper',
+								border: '1px solid',
+								borderColor: 'divider',
+								borderRadius: 1,
+								mt: 0.5,
+								zIndex: theme.zIndex.modal
+							}
+						}}
+					/>
+				</Box>
 			</Toolbar>
 		</AppBar>
 	);

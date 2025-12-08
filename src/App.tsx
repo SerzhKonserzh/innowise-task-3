@@ -38,6 +38,15 @@ export default function App() {
 			h2: { fontSize: '2rem', fontWeight: 600 },
 			body1: { fontSize: '1rem' }
 		},
+		breakpoints: {
+			values: {
+				xs: 400,
+				sm: 600,
+				md: 900,
+				lg: 1200,
+				xl: 1536
+			}
+		}
 	});
 
 	return (

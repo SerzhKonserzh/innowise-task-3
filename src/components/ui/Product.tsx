@@ -12,19 +12,28 @@ import {
 	useMediaQuery,
 	useTheme,
 	List,
-	ListItem
+	ListItem,
+	Tooltip
 } from '@mui/material';
 import { IProduct } from '../../store/products/productTypes';
 import { Link } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { addItemToCart } from '../../store/user/userSlice';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import ShareIcon from '@mui/icons-material/Share';
+import { TypeRootState } from '../../store/store';
+import QuantityChange from './QuantityChange';
 
 const Product: FC<{ product: IProduct }> = ({ product }) => {
 	const theme = useTheme();
 	const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 	const dispatch = useDispatch();
+
+	const { isAuthenticated, cart } = useSelector(
+		(state: TypeRootState) => state.user
+	);
+
+	const item = cart.find(i => i.id === product.id);
 
 	const addToCart = () => {
 		dispatch(addItemToCart(product));
@@ -99,7 +108,15 @@ const Product: FC<{ product: IProduct }> = ({ product }) => {
 						{product.title}
 					</Typography>
 
-					<Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 2, justifyContent: isMobile ? 'center' : 'start' }}>
+					<Box
+						sx={{
+							display: 'flex',
+							alignItems: 'center',
+							gap: 1,
+							mb: 2,
+							justifyContent: isMobile ? 'center' : 'start'
+						}}
+					>
 						<Rating value={product.rating} readOnly precision={0.5} />
 						<Typography variant="body2" color="text.secondary">
 							({product.reviews.length} reviews)
@@ -131,21 +148,59 @@ const Product: FC<{ product: IProduct }> = ({ product }) => {
 					<Typography variant="subtitle1" fontWeight="600" sx={{ mb: 1 }}>
 						Tags:
 					</Typography>
-					<List sx={{ padding: '0 0 16px', display: 'flex', flexDirection: 'column'}}>
+					<List
+						sx={{
+							padding: '0 0 16px',
+							display: 'flex',
+							flexDirection: 'column'
+						}}
+					>
 						{product.tags.map((tag, id) => (
 							<ListItem
 								key={id}
-								sx={{ textTransform: 'uppercase', padding: 0,  justifyContent: isMobile ? 'center' : 'start'  }}
+								sx={{
+									textTransform: 'uppercase',
+									padding: 0,
+									justifyContent: isMobile ? 'center' : 'start'
+								}}
 							>
 								<Typography variant="body2">{tag}</Typography>
 							</ListItem>
 						))}
 					</List>
 
-					<Box sx={{ display: 'flex', gap: 2, flexWrap: 'wrap', justifyContent: isMobile ? 'center' : 'start' }}>
-						<Button variant="contained" color="primary" size="large" onClick={addToCart}>
-							Add to cart
-						</Button>
+					<Box
+						sx={{
+							display: 'flex',
+							gap: 2,
+							flexWrap: 'wrap',
+							justifyContent: isMobile ? 'center' : 'start'
+						}}
+					>
+						{isAuthenticated ? (item ? (<QuantityChange item={item}/>) : (
+							<Button
+								variant="contained"
+								color="primary"
+								size="large"
+								onClick={addToCart}
+							>
+								Add to cart
+							</Button>)
+						) : (
+							<Tooltip title={'You need to login'} arrow>
+								<span>
+									<Button
+										variant="contained"
+										color="primary"
+										size="large"
+										onClick={addToCart}
+										disabled
+									>
+										Add to cart
+									</Button>
+								</span>
+							</Tooltip>
+						)}
 					</Box>
 				</Grid>
 			</Grid>

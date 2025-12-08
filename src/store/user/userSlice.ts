@@ -6,7 +6,6 @@ import { loadAuthFromStorage } from './userStorage';
 
 const stored = loadAuthFromStorage();
 
-// Проверяем, не истёк ли токен
 const isTokenValid = (expires: string | null): boolean => {
 	if (!expires) return false;
 	const now = new Date().getTime();
@@ -38,7 +37,6 @@ const getInitialState = (): IAuthState => {
 			tokenExpires
 		};
 	} else {
-		// Токен недействителен — очищаем
 		return {
 			currentUser: null,
 			cart: [],
@@ -70,6 +68,21 @@ const userSlice = createSlice({
 
 			state.cart = newCart;
 		},
+		removeItemFromCart: (state, action) => {
+			state.cart = state.cart.filter(item => item.id !== action.payload);
+		},
+		updateCartItemQuantity: (
+			state,
+			action
+		) => {
+			const { id, quantity } = action.payload;
+			const item = state.cart.find(i => i.id === id);
+			if (item && quantity > 0) {
+				item.quantity = quantity;
+			} else if (item) {
+				state.cart = state.cart.filter(i => i.id !== id);
+			}
+		},
 		loginUser: (state, { payload }) => {
 			const { currentUser, token, tokenExpires } = payload;
 			state.currentUser = currentUser;
@@ -88,6 +101,6 @@ const userSlice = createSlice({
 	}
 });
 
-export const { addItemToCart, loginUser, logoutUser } = userSlice.actions;
+export const { addItemToCart, loginUser, logoutUser, removeItemFromCart, updateCartItemQuantity } = userSlice.actions;
 
 export default userSlice.reducer;

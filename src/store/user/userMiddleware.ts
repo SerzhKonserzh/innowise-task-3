@@ -9,6 +9,8 @@ export const userMiddleware: Middleware = (store) => (next) => (action: AnyActio
     'user/loginUser',
     'user/logoutUser',
     'user/addItemToCart', 
+    'user/removeItemFromCart', 
+    'user/updateCartItemQuantity', 
   ];
 
   if (authActions.includes(action.type)) {
