@@ -90,7 +90,27 @@ const Auth: FC = (props: { disableCustomTheme?: boolean }) => {
 
 		try {
 			const data = await login(credentials).unwrap();
-			dispatch(loginUser(data));
+
+			// Рассчитываем срок действия (7 дней)
+			const expires = new Date(
+				Date.now() + 7 * 24 * 60 * 60 * 1000
+			).toISOString();
+
+			dispatch(
+				loginUser({
+					currentUser: {
+						id: data.id,
+						username: data.username,
+						email: data.email,
+						firstName: data.firstName,
+						lastName: data.lastName,
+						gender: data.gender,
+						image: data.image
+					},
+					token: data.accessToken,
+					tokenExpires: expires
+				})
+			);
 			navigate('/');
 		} catch (err: any) {
 			let message = 'Login failed. Please check your credentials.';
@@ -153,7 +173,7 @@ const Auth: FC = (props: { disableCustomTheme?: boolean }) => {
 							fullWidth
 							variant="outlined"
 							color="primary"
-              error={!!formError && !credentials.username.trim()}
+							error={!!formError && !credentials.username.trim()}
 						/>
 					</FormControl>
 					<FormControl>
@@ -171,10 +191,15 @@ const Auth: FC = (props: { disableCustomTheme?: boolean }) => {
 							fullWidth
 							variant="outlined"
 							color="primary"
-              error={!!formError && !credentials.password.trim()}
+							error={!!formError && !credentials.password.trim()}
 						/>
 					</FormControl>
-					<Button type="submit" fullWidth variant="contained" disabled={isLoading}>
+					<Button
+						type="submit"
+						fullWidth
+						variant="contained"
+						disabled={isLoading}
+					>
 						Sign in
 					</Button>
 				</Box>

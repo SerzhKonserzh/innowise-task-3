@@ -1,14 +1,56 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { IProductCart } from '../products/productTypes';
-import { IAuthState, ILoginRequest } from './userTypes';
+import { IAuthState, ILoginRequest, IUser } from './userTypes';
 import { useLoginUserMutation } from './userApi';
+import { loadAuthFromStorage } from './userStorage';
 
-const initialState: IAuthState = {
-	currentUser: null,
-	cart: [],
-	isAuthenticated: false,
-	isLoading: false
+const stored = loadAuthFromStorage();
+
+// Проверяем, не истёк ли токен
+const isTokenValid = (expires: string | null): boolean => {
+	if (!expires) return false;
+	const now = new Date().getTime();
+	const expiresTime = new Date(expires).getTime();
+	return now < expiresTime;
 };
+
+const getInitialState = (): IAuthState => {
+	if (!stored) {
+		return {
+			currentUser: null,
+			cart: [],
+			isAuthenticated: false,
+			isLoading: false,
+			token: null,
+			tokenExpires: null
+		};
+	}
+
+	const { token, tokenExpires, currentUser, cart } = stored;
+
+	if (token && tokenExpires && isTokenValid(tokenExpires) && currentUser) {
+		return {
+			currentUser,
+			cart: cart || [],
+			isAuthenticated: true,
+			isLoading: false,
+			token,
+			tokenExpires
+		};
+	} else {
+		// Токен недействителен — очищаем
+		return {
+			currentUser: null,
+			cart: [],
+			isAuthenticated: false,
+			isLoading: false,
+			token: null,
+			tokenExpires: null
+		};
+	}
+};
+
+const initialState: IAuthState = getInitialState();
 
 const userSlice = createSlice({
 	name: 'user',
@@ -28,16 +70,21 @@ const userSlice = createSlice({
 
 			state.cart = newCart;
 		},
-    loginUser: (state, { payload }) => {
-      state.currentUser = {...payload};
-      state.isAuthenticated = true;
-      state.isLoading = false;
-    },
-		logoutUser: (state) => {
-      state.currentUser = null;
-      state.isAuthenticated = false;
-      state.isLoading = false;
-    },
+		loginUser: (state, { payload }) => {
+			const { currentUser, token, tokenExpires } = payload;
+			state.currentUser = currentUser;
+			state.isAuthenticated = true;
+			state.isLoading = false;
+			state.token = token;
+			state.tokenExpires = tokenExpires;
+		},
+		logoutUser: state => {
+			state.currentUser = null;
+			state.isAuthenticated = false;
+			state.isLoading = false;
+			state.token = null;
+			state.tokenExpires = null;
+		}
 	}
 });
 
