@@ -65,7 +65,6 @@ const Header = () => {
 
 	useEffect(() => {
 		if (!currentUser) return;
-		console.log(currentUser);
 		setInfo(currentUser);
 	}, [currentUser]);
 
