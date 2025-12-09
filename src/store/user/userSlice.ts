@@ -96,6 +96,7 @@ const userSlice = createSlice({
 			state.isAuthenticated = false;
 			state.isLoading = false;
 			state.token = null;
+			state.cart = [];
 			state.tokenExpires = null;
 		}
 	}
