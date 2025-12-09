@@ -43,6 +43,7 @@ const QuantityChange: FC<{ item: IProductCart }> = ({ item }) => {
 					size="small"
 					disabled={item.quantity <= 1}
 					onClick={() => handleQuantityChange(item.id, item.quantity - 1)}
+					aria-label='Remove one item from cart'
 				>
 					<Remove />
 				</IconButton>
@@ -61,6 +62,7 @@ const QuantityChange: FC<{ item: IProductCart }> = ({ item }) => {
 				<IconButton
 					size="small"
 					onClick={() => handleQuantityChange(item.id, item.quantity + 1)}
+					aria-label='Add item to cart'
 				>
 					<Add />
 				</IconButton>
@@ -69,6 +71,7 @@ const QuantityChange: FC<{ item: IProductCart }> = ({ item }) => {
 				onClick={() => handleRemove(item.id)}
 				color="error"
 				sx={{ maxWidth: 40 }}
+				aria-label='Remove item from cart'
 			>
 				<Delete />
 			</IconButton>

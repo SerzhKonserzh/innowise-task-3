@@ -65,8 +65,7 @@ const ProductCard = ({ product }: CatalogProductCardProps) => {
 				</Typography>
 
 				<Typography
-					variant="subtitle2"
-					fontWeight="medium"
+					fontWeight="bold"
 					sx={{
 						mt: 0.5,
 						mb: 1,
@@ -96,7 +95,7 @@ const ProductCard = ({ product }: CatalogProductCardProps) => {
 					justifyContent="space-between"
 					alignItems="center"
 				>
-					<Typography variant="h6" color="primary" fontWeight="bold">
+					<Typography color="primary" fontWeight="bold">
 						${product.price}
 					</Typography>
 					<Typography

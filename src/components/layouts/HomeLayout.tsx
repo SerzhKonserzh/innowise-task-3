@@ -8,7 +8,9 @@ const HomeLayout: FC = () => {
 	return (
 		<Grid>
 			<Header />
-			<Outlet />
+			<main>
+				<Outlet />
+			</main>
 		</Grid>
 	);
 };

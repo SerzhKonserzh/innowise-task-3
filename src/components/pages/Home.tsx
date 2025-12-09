@@ -101,19 +101,19 @@ const CatalogPage = () => {
 
 	return (
 		<Container sx={{ py: 4 }}>
-			<Typography variant="h4" gutterBottom>
-				Catalog
+			<Typography variant="h1" gutterBottom>
+				Shop catalog
 			</Typography>
 
 			<Box sx={{ mb: 4, bgcolor: 'background.default', borderRadius: 2 }}>
 				<Grid container spacing={2} alignItems="center">
 					<Grid size={{ xs: 12, sm: 5, md: 3 }}>
 						<FormControl fullWidth size="small">
-							<InputLabel>Category</InputLabel>
+							<InputLabel id="category-label">Category</InputLabel>
 							<Select
 								value={category}
-								label="Категория"
 								onChange={e => setCategory(e.target.value)}
+								labelId="category-label"
 							>
 								<MenuItem value="">All</MenuItem>
 								{categoriesData?.map(cat => (
@@ -127,11 +127,12 @@ const CatalogPage = () => {
 
 					<Grid size={{ xs: 12, sm: 5, md: 3 }}>
 						<FormControl fullWidth size="small">
-							<InputLabel>Sort</InputLabel>
+							<InputLabel id="sort-label">Sort</InputLabel>
 							<Select
 								value={sortBy}
-								label="Sort"
 								onChange={e => setSortBy(e.target.value)}
+								aria-label='Select parameter to sort'
+								labelId="sort-label"
 							>
 								<MenuItem value="title">By name</MenuItem>
 								<MenuItem value="price">By price</MenuItem>
@@ -149,6 +150,7 @@ const CatalogPage = () => {
 							variant="outlined"
 							size="small"
 							onClick={() => setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc')}
+              aria-label='Change sort order'
 						>
 							{sortOrder === 'asc' ? '↑' : '↓'}
 						</Button>

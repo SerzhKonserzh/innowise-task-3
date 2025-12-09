@@ -96,13 +96,13 @@ const Header = () => {
 					width: '100%'
 				}}
 			>
-				<Button component={Link} to={'/'}>
+				<Button component={Link} to={'/'} aria-label='Go to main page'>
 					{!isMobile ? (
 						<Typography variant="h6" color="primary" fontWeight="bold">
 							Web Shop
 						</Typography>
 					) : (
-						<IconButton sx={{ p: 0 }}>
+						<IconButton sx={{ p: 0 }} aria-label='Go to main page'>
 							<StorefrontIcon
 								sx={{
 									color: 'primary.main',
@@ -123,7 +123,7 @@ const Header = () => {
 				>
 					<Box>
 						<Tooltip title="Open cart">
-							<IconButton sx={{ p: 0 }} component={Link} to={'/cart'}>
+							<IconButton sx={{ p: 0 }} component={Link} to={'/cart'} aria-label='Open cart'>
 								<CartBadge
 									badgeContent={
 										isAuthenticated
@@ -145,7 +145,7 @@ const Header = () => {
 					</Box>
 					<Box>
 						<Tooltip title="Open settings">
-							<IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+							<IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }} aria-label='Open user settings'>
 								<Avatar
 									alt="Remy Sharp"
 									src={info.image}

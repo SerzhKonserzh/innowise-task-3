@@ -22,9 +22,9 @@ export default (env: EnvVariables) => {
 		//выходной файл
 		output: {
 			filename: '[name].[contenthash].js', //каждый раз подставляет хэш от контента
-			path: path.resolve(__dirname, 'dist'),
+			path: path.resolve(__dirname, 'build'),
 			clean: true,
-			publicPath: './' //для корректной работы маршрутов
+			publicPath: isDev ? '/' : './' //для корректной работы маршрутов
 		},
 		//подключаемые плагины
 		plugins: [
