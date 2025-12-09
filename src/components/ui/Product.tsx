@@ -40,34 +40,6 @@ const Product: FC<{ product: IProduct }> = ({ product }) => {
 	};
 
 	return (
-		// <Container>
-		// 	<Button sx={{ mb: 2 }} component={Link} to="/">
-		// 		← Back
-		// 	</Button>
-		// 	<Box display="flex" gap={4}>
-		// 		<CardMedia
-		// 			component="img"
-		// 			image={product.thumbnail}
-		// 			alt={product.title}
-		// 			sx={{ width: 300, height: 300, objectFit: 'contain', border: '1px solid black' }}
-		// 		/>
-		// 		<Box>
-		// 			<Typography variant="h4">{product.title}</Typography>
-		// 			<Typography variant="h6" color="primary">
-		// 				${product.price}
-		// 			</Typography>
-		// 			<Typography sx={{ mt: 2 }}>{product.description}</Typography>
-		// 			<Button
-		// 				variant="contained"
-		// 				color="primary"
-		// 				sx={{ mt: 3 }}
-		// 				onClick={addToCart}
-		// 			>
-		// 				Add to cart
-		// 			</Button>
-		// 		</Box>
-		// 	</Box>
-		// </Container>
 		<Container maxWidth="lg" sx={{ py: 4 }}>
 			<Grid
 				container
