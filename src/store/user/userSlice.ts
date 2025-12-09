@@ -1,7 +1,5 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { IProductCart } from '../products/productTypes';
-import { IAuthState, ILoginRequest, IUser } from './userTypes';
-import { useLoginUserMutation } from './userApi';
+import { createSlice } from '@reduxjs/toolkit';
+import { IAuthState } from './userTypes';
 import { loadAuthFromStorage } from './userStorage';
 
 const stored = loadAuthFromStorage();
@@ -71,10 +69,7 @@ const userSlice = createSlice({
 		removeItemFromCart: (state, action) => {
 			state.cart = state.cart.filter(item => item.id !== action.payload);
 		},
-		updateCartItemQuantity: (
-			state,
-			action
-		) => {
+		updateCartItemQuantity: (state, action) => {
 			const { id, quantity } = action.payload;
 			const item = state.cart.find(i => i.id === id);
 			if (item && quantity > 0) {
@@ -102,6 +97,12 @@ const userSlice = createSlice({
 	}
 });
 
-export const { addItemToCart, loginUser, logoutUser, removeItemFromCart, updateCartItemQuantity } = userSlice.actions;
+export const {
+	addItemToCart,
+	loginUser,
+	logoutUser,
+	removeItemFromCart,
+	updateCartItemQuantity
+} = userSlice.actions;
 
 export default userSlice.reducer;

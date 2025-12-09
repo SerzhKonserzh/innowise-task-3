@@ -1,5 +1,11 @@
 import { Add, Delete, Remove } from '@mui/icons-material';
-import { Box, IconButton, TextField, useMediaQuery, useTheme } from '@mui/material';
+import {
+	Box,
+	IconButton,
+	TextField,
+	useMediaQuery,
+	useTheme
+} from '@mui/material';
 import { FC } from 'react';
 import React from 'react';
 import { IProductCart } from '../../store/products/productTypes';
@@ -24,7 +30,14 @@ const QuantityChange: FC<{ item: IProductCart }> = ({ item }) => {
 	};
 
 	return (
-		<Box sx={{ display: 'flex' , flexDirection: isMobile ? 'column' : 'row', alignItems: 'center', gap: 1}}>
+		<Box
+			sx={{
+				display: 'flex',
+				flexDirection: isMobile ? 'column' : 'row',
+				alignItems: 'center',
+				gap: 1
+			}}
+		>
 			<Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
 				<IconButton
 					size="small"
@@ -43,7 +56,7 @@ const QuantityChange: FC<{ item: IProductCart }> = ({ item }) => {
 						}
 					}}
 					inputProps={{ min: 1, style: { textAlign: 'center' } }}
-					sx={{ width: 60}}
+					sx={{ width: 60 }}
 				/>
 				<IconButton
 					size="small"
@@ -55,7 +68,7 @@ const QuantityChange: FC<{ item: IProductCart }> = ({ item }) => {
 			<IconButton
 				onClick={() => handleRemove(item.id)}
 				color="error"
-				sx={{ maxWidth: 40}}
+				sx={{ maxWidth: 40 }}
 			>
 				<Delete />
 			</IconButton>

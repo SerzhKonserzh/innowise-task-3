@@ -3,9 +3,7 @@ import React from 'react';
 import { Outlet } from 'react-router';
 
 const AuthLayout: FC = () => {
-  return (
-    <Outlet />
-  );
+	return <Outlet />;
 };
 
 export default AuthLayout;

@@ -1,21 +1,18 @@
 import React from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 import {
 	Box,
 	Container,
 	Typography,
 	Card,
-	CardContent,
-	CardMedia,
 	Button,
 	Divider,
-	Grid,
+	Grid
 } from '@mui/material';
 
 import { Link } from 'react-router-dom';
 import { TypeRootState } from '../../store/store';
 
-import QuantityChange from '../ui/QuantityChange';
 import CartItem from '../ui/CartItem';
 
 const Cart = () => {
@@ -24,7 +21,7 @@ const Cart = () => {
 		(state: TypeRootState) => state.user.isAuthenticated
 	);
 
-  const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+	const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
 
 	const getTotalPrice = () => {
 		return cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
@@ -67,7 +64,7 @@ const Cart = () => {
 			<Grid container spacing={3}>
 				<Grid size={{ xs: 12, md: 6 }}>
 					{cart.map(item => (
-						<CartItem item={item}/>
+						<CartItem item={item} />
 					))}
 				</Grid>
 
@@ -80,8 +77,7 @@ const Cart = () => {
 						<Divider sx={{ my: 2 }} />
 						<Box display="flex" justifyContent="space-between" mb={2}>
 							<Typography variant="body1">
-								Products ({totalItems} {' '}
-								{totalItems === 1 ? 'item' : 'items'}):
+								Products ({totalItems} {totalItems === 1 ? 'item' : 'items'}):
 							</Typography>
 							<Typography variant="body1">
 								${getTotalPrice().toFixed(2)}

@@ -1,6 +1,5 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { ILoginRequest, IAuthResponse } from './userTypes';
-import { TypeRootState } from '../store';
 
 const BASE_URL = 'https://dummyjson.com/user/';
 
@@ -10,12 +9,12 @@ export const userApi = createApi({
 	endpoints: build => ({
 		loginUser: build.mutation<IAuthResponse, ILoginRequest>({
 			query: credentials => ({
-        url: '/login',
-        method: 'POST',
-        body: credentials,
-      })
+				url: '/login',
+				method: 'POST',
+				body: credentials
+			})
 		})
 	})
 });
 
-export const {useLoginUserMutation} = userApi;
+export const { useLoginUserMutation } = userApi;

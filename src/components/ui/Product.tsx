@@ -16,11 +16,8 @@ import {
 	Tooltip
 } from '@mui/material';
 import { IProduct } from '../../store/products/productTypes';
-import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { addItemToCart } from '../../store/user/userSlice';
-import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
-import ShareIcon from '@mui/icons-material/Share';
 import { TypeRootState } from '../../store/store';
 import QuantityChange from './QuantityChange';
 
@@ -149,15 +146,19 @@ const Product: FC<{ product: IProduct }> = ({ product }) => {
 							justifyContent: isMobile ? 'center' : 'start'
 						}}
 					>
-						{isAuthenticated ? (item ? (<QuantityChange item={item}/>) : (
-							<Button
-								variant="contained"
-								color="primary"
-								size="large"
-								onClick={addToCart}
-							>
-								Add to cart
-							</Button>)
+						{isAuthenticated ? (
+							item ? (
+								<QuantityChange item={item} />
+							) : (
+								<Button
+									variant="contained"
+									color="primary"
+									size="large"
+									onClick={addToCart}
+								>
+									Add to cart
+								</Button>
+							)
 						) : (
 							<Tooltip title={'You need to login'} arrow>
 								<span>

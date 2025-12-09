@@ -1,11 +1,7 @@
 import React, { useState } from 'react';
-import Button from '@mui/material/Button';
-import Home from './components/pages/Home';
 import { Provider } from 'react-redux';
 import { store } from './store/store';
-import Header from './components/Header';
 import { createTheme, CssBaseline, ThemeProvider } from '@mui/material';
-import { deepPurple, purple } from '@mui/material/colors';
 import { RouterProvider } from 'react-router';
 import { router } from './components/routes/AppRouter';
 
@@ -19,17 +15,17 @@ export default function App() {
 	const theme = createTheme({
 		palette: {
 			primary: {
-				main: '#5D3A9B' // темно-фиолетовый
+				main: '#5D3A9B'
 			},
 			secondary: {
-				main: '#8A66C2' // светло-фиолетовый (акцент)
+				main: '#8A66C2'
 			},
 			background: {
-				default: '#F9F7FC', // очень светлый лавандовый фон
+				default: '#F9F7FC',
 				paper: '#FFFFFF'
 			},
 			text: {
-				primary: '#2E294E', // тёмно-синий для основного текста
+				primary: '#2E294E',
 				secondary: '#5D5D5D'
 			}
 		},

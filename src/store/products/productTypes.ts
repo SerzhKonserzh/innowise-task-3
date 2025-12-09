@@ -1,67 +1,67 @@
 export interface IProducts {
-  products: IProduct[];
-  total: number;
-  skip: number;
-  limit: number;
+	products: IProduct[];
+	total: number;
+	skip: number;
+	limit: number;
 }
 
 export interface IProduct {
-  id: number;
-  title: string;
-  description: string;
-  category: string;
-  price: number;
-  discountPercentage: number;
-  rating: number;
-  stock: number;
-  tags: string[];
-  brand?: string;
-  sku: string;
-  weight: number;
-  dimensions: IDimensions;
-  warrantyInformation: string;
-  shippingInformation: string;
-  availabilityStatus: string;
-  reviews: IReview[];
-  returnPolicy: string;
-  minimumOrderQuantity: number;
-  meta: IMeta;
-  images: string[];
-  thumbnail: string;
+	id: number;
+	title: string;
+	description: string;
+	category: string;
+	price: number;
+	discountPercentage: number;
+	rating: number;
+	stock: number;
+	tags: string[];
+	brand?: string;
+	sku: string;
+	weight: number;
+	dimensions: IDimensions;
+	warrantyInformation: string;
+	shippingInformation: string;
+	availabilityStatus: string;
+	reviews: IReview[];
+	returnPolicy: string;
+	minimumOrderQuantity: number;
+	meta: IMeta;
+	images: string[];
+	thumbnail: string;
 }
 
 export interface IProductCart extends IProduct {
-  quantity: number
+	quantity: number;
 }
 
 export interface IProductsParams {
-  skip?: number;
-  limit?: number;
-  select?: string;
-  sortBy?: string;
-  order?: 'asc' | 'desc';
-  category?: string;
+	skip?: number;
+	limit?: number;
+	select?: string;
+	sortBy?: string;
+	order?: 'asc' | 'desc';
+	category?: string;
 }
 
 interface IMeta {
-  createdAt: string;
-  updatedAt: string;
-  barcode: string;
-  qrCode: string;
+	createdAt: string;
+	updatedAt: string;
+	barcode: string;
+	qrCode: string;
 }
 
 interface IReview {
-  rating: number;
-  comment: string;
-  date: string;
-  reviewerName: string;
-  reviewerEmail: string;
+	rating: number;
+	comment: string;
+	date: string;
+	reviewerName: string;
+	reviewerEmail: string;
 }
 
 interface IDimensions {
-  width: number;
-  height: number;
-  depth: number;
+	width: number;
+	height: number;
+	depth: number;
 }
 
 // getProductsWithParams: build.query<IProducts, IProductsParams>({

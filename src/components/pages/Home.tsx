@@ -5,18 +5,15 @@ import {
 	Container,
 	Grid,
 	Typography,
-	TextField,
 	Select,
 	MenuItem,
 	FormControl,
 	InputLabel,
 	Pagination,
 	CircularProgress,
-	Slider,
-	FormHelperText,
 	Button,
-  useTheme,
-  useMediaQuery
+	useTheme,
+	useMediaQuery
 } from '@mui/material';
 import {
 	useGetProductsWithParamsQuery,
@@ -144,7 +141,10 @@ const CatalogPage = () => {
 						</FormControl>
 					</Grid>
 
-					<Grid size={{ xs: 12, sm: 1, md: 3 }} textAlign={isMobile ? 'center' : 'left'}>
+					<Grid
+						size={{ xs: 12, sm: 1, md: 3 }}
+						textAlign={isMobile ? 'center' : 'left'}
+					>
 						<Button
 							variant="outlined"
 							size="small"
