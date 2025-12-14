@@ -3,12 +3,22 @@ import React from 'react';
 import { useParams } from 'react-router';
 import { useGetProductItemQuery } from '../../store/products/productApi';
 import Product from '../ui/Product';
-import { CircularProgress, Container } from '@mui/material';
+import { CircularProgress, Container, Typography } from '@mui/material';
+import { useNumberParams } from '../../hooks/useNumberParams';
 
 const SingleProduct: FC = () => {
-	const { id } = useParams();
+	const id = useNumberParams('id');
 
-	const { data: product, isLoading } = useGetProductItemQuery(Number(id));
+	if (id === null)
+		return (
+			<Container sx={{ py: 4 }}>
+				<Typography variant="h5" align="center">
+					Product not found, incorrect id
+				</Typography>
+			</Container>
+		);
+
+	const { data: product, isLoading, isError } = useGetProductItemQuery(Number(id));
 
 	if (isLoading)
 		return (
@@ -16,7 +26,14 @@ const SingleProduct: FC = () => {
 				<CircularProgress />
 			</Container>
 		);
-	if (!product) return <div>Товар не найден</div>;
+	if (!product || isError)
+		return (
+			<Container sx={{ py: 4 }}>
+				<Typography variant="h5" align="center">
+					Product not found
+				</Typography>
+			</Container>
+		);
 
 	return <Product product={product} />;
 };
