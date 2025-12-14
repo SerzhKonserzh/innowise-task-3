@@ -21,7 +21,7 @@ import {
 } from '../../store/products/productApi';
 import ProductCard from '../ui/ProductCard';
 
-const CatalogPage = () => {
+const Home = () => {
 	const [page, setPage] = useState(1);
 	const [limit] = useState(12);
 	const [category, setCategory] = useState('');
@@ -195,4 +195,4 @@ const CatalogPage = () => {
 	);
 };
 
-export default CatalogPage;
+export default Home;
