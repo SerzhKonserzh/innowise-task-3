@@ -2,6 +2,7 @@ import { Add, Delete, Remove } from '@mui/icons-material';
 import {
 	Box,
 	IconButton,
+	Stack,
 	TextField,
 	useMediaQuery,
 	useTheme
@@ -30,9 +31,8 @@ const QuantityChange: FC<{ item: IProductCart }> = ({ item }) => {
 	};
 
 	return (
-		<Box
+		<Stack
 			sx={{
-				display: 'flex',
 				flexDirection: isMobile ? 'column' : 'row',
 				alignItems: 'center',
 				gap: 1
@@ -75,7 +75,7 @@ const QuantityChange: FC<{ item: IProductCart }> = ({ item }) => {
 			>
 				<Delete />
 			</IconButton>
-		</Box>
+		</Stack>
 	);
 };
 

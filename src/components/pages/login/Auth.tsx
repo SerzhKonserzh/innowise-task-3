@@ -148,13 +148,11 @@ const Auth: FC = (props: { disableCustomTheme?: boolean }) => {
 					</Alert>
 				)}
 
-				<Box
+				<Stack
 					component="form"
 					onSubmit={handleSubmit}
 					noValidate
 					sx={{
-						display: 'flex',
-						flexDirection: 'column',
 						width: '100%',
 						gap: 2
 					}}
@@ -202,13 +200,13 @@ const Auth: FC = (props: { disableCustomTheme?: boolean }) => {
 					>
 						Sign in
 					</Button>
-				</Box>
+				</Stack>
 				<Divider>or</Divider>
-				<Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+				<Stack sx={{ gap: 2 }}>
 					<Button type="button" component={Link} to={'/'} disabled={isLoading}>
 						Check catalog
 					</Button>
-				</Box>
+				</Stack>
 			</Card>
 		</SignInContainer>
 	);
