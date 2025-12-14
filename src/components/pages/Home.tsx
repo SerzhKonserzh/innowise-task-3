@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo } from 'react';
+import { useState, useMemo } from 'react';
 import React from 'react';
 import {
 	Box,
@@ -21,67 +21,109 @@ import {
 } from '../../store/products/productApi';
 import ProductCard from '../ui/ProductCard';
 
-const CatalogPage = () => {
-	const [page, setPage] = useState(1);
-	const [limit] = useState(12);
-	const [category, setCategory] = useState('');
-	const [sortBy, setSortBy] = useState('title');
-	const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc');
+interface FiltersState {
+	page: number;
+	limit: number;
+	category: string;
+	sortBy: string;
+	sortOrder: 'asc' | 'desc';
+}
+
+const Home = () => {
 	const theme = useTheme();
 	const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
-	useEffect(() => {
-		setPage(1);
-	}, [category, sortBy, sortOrder]);
+	const [filters, setFilters] = useState<FiltersState>({
+		page: 1,
+		limit: 12,
+		category: '',
+		sortBy: 'title',
+		sortOrder: 'asc'
+	});
 
-	const skip = (page - 1) * limit;
+	const handleCategoryChange = (category: string) => {
+		setFilters(prev => ({
+			...prev,
+			category,
+			page: 1
+		}));
+	};
+
+	const handleSortByChange = (sortBy: string) => {
+		setFilters(prev => ({
+			...prev,
+			sortBy,
+			page: 1
+		}));
+	};
+
+	const handleSortOrderToggle = () => {
+		setFilters(prev => ({
+			...prev,
+			sortOrder: prev.sortOrder === 'asc' ? 'desc' : 'asc',
+			page: 1
+		}));
+	};
+
+	const handlePageChange = (page: number) => {
+		setFilters(prev => ({ ...prev, page }));
+	};
+
+	const handleResetFilters = () => {
+		setFilters({
+			page: 1,
+			limit: 12,
+			category: '',
+			sortBy: 'title',
+			sortOrder: 'asc'
+		});
+	};
+
+	const skip = (filters.page - 1) * filters.limit;
 
 	const { data, isLoading, isError } = useGetProductsWithParamsQuery({
 		skip,
-		limit,
-		category: category || undefined,
-		sortBy: sortBy || undefined,
-		order: sortOrder
+		limit: filters.limit,
+		category: filters.category || undefined,
+		sortBy: filters.sortBy || undefined,
+		order: filters.sortOrder
 	});
 
 	const { data: categoriesData } = useGetCategoriesQuery();
 
-	const totalPages = data ? Math.ceil(data.total / limit) : 1;
+	const totalPages = data ? Math.ceil(data.total / filters.limit) : 1;
 
 	const displayedProducts = useMemo(() => {
 		if (!data?.products) return [];
 
-		if (category) {
+		if (filters.category) {
 			return [...data.products].sort((a, b) => {
-				if (sortBy === 'title') {
-					return sortOrder === 'asc'
+				if (filters.sortBy === 'title') {
+					return filters.sortOrder === 'asc'
 						? a.title.localeCompare(b.title)
 						: b.title.localeCompare(a.title);
 				}
-				if (sortBy === 'price') {
-					return sortOrder === 'asc' ? a.price - b.price : b.price - a.price;
+				if (filters.sortBy === 'price') {
+					return filters.sortOrder === 'asc'
+						? a.price - b.price
+						: b.price - a.price;
 				}
-				if (sortBy === 'rating') {
-					return sortOrder === 'asc'
+				if (filters.sortBy === 'rating') {
+					return filters.sortOrder === 'asc'
 						? a.rating - b.rating
 						: b.rating - a.rating;
 				}
-				if (sortBy === 'stock') {
-					return sortOrder === 'asc' ? a.stock - b.stock : b.stock - a.stock;
+				if (filters.sortBy === 'stock') {
+					return filters.sortOrder === 'asc'
+						? a.stock - b.stock
+						: b.stock - a.stock;
 				}
 				return 0;
 			});
 		}
 
 		return data.products;
-	}, [data, category, sortBy, sortOrder]);
-
-	const handleResetFilters = () => {
-		setCategory('');
-		setSortBy('title');
-		setSortOrder('asc');
-		setPage(1);
-	};
+	}, [data, filters.category, filters.sortBy, filters.sortOrder]);
 
 	if (isLoading) {
 		return (
@@ -111,9 +153,10 @@ const CatalogPage = () => {
 						<FormControl fullWidth size="small">
 							<InputLabel id="category-label">Category</InputLabel>
 							<Select
-								value={category}
-								onChange={e => setCategory(e.target.value)}
+								value={filters.category}
+								onChange={e => handleCategoryChange(e.target.value)}
 								labelId="category-label"
+								label="Category"
 							>
 								<MenuItem value="">All</MenuItem>
 								{categoriesData?.map(cat => (
@@ -129,10 +172,11 @@ const CatalogPage = () => {
 						<FormControl fullWidth size="small">
 							<InputLabel id="sort-label">Sort</InputLabel>
 							<Select
-								value={sortBy}
-								onChange={e => setSortBy(e.target.value)}
-								aria-label='Select parameter to sort'
+								value={filters.sortBy}
+								onChange={e => handleSortByChange(e.target.value)}
+								aria-label="Select parameter to sort"
 								labelId="sort-label"
+								label="Sort"
 							>
 								<MenuItem value="title">By name</MenuItem>
 								<MenuItem value="price">By price</MenuItem>
@@ -149,10 +193,10 @@ const CatalogPage = () => {
 						<Button
 							variant="outlined"
 							size="small"
-							onClick={() => setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc')}
-              aria-label='Change sort order'
+							onClick={handleSortOrderToggle}
+							aria-label="Change sort order"
 						>
-							{sortOrder === 'asc' ? '↑' : '↓'}
+							{filters.sortOrder === 'asc' ? '↑' : '↓'}
 						</Button>
 					</Grid>
 
@@ -181,8 +225,8 @@ const CatalogPage = () => {
 							<Pagination
 								size="small"
 								count={totalPages}
-								page={page}
-								onChange={(_, newPage) => setPage(newPage)}
+								page={filters.page}
+								onChange={(_, newPage) => handlePageChange(newPage)}
 								color="primary"
 							/>
 						</Box>
@@ -193,4 +237,4 @@ const CatalogPage = () => {
 	);
 };
 
-export default CatalogPage;
+export default Home;

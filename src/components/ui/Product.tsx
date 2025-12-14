@@ -13,7 +13,8 @@ import {
 	useTheme,
 	List,
 	ListItem,
-	Tooltip
+	Tooltip,
+	Stack
 } from '@mui/material';
 import { IProduct } from '../../store/products/productTypes';
 import { useDispatch, useSelector } from 'react-redux';
@@ -51,26 +52,18 @@ const Product: FC<{ product: IProduct }> = ({ product }) => {
 					}}
 				>
 					<Box
+						component="img"
+						src={product.images[0]}
+						alt={product.title}
 						sx={{
-							display: 'flex',
-							flexDirection: isMobile ? 'row' : 'column',
-							gap: 1
+							width: '100%',
+							maxWidth: isMobile ? 300 : 'z0%',
+							borderRadius: 2,
+							objectFit: 'cover',
+							aspectRatio: '1 / 1',
+							border: `2px solid ${theme.palette.primary.main}`
 						}}
-					>
-						<Box
-							component="img"
-							src={product.images[0]}
-							alt={product.title}
-							sx={{
-								width: '100%',
-								maxWidth: isMobile ? 300 : 'z0%',
-								borderRadius: 2,
-								objectFit: 'cover',
-								aspectRatio: '1 / 1',
-								border: `2px solid ${theme.palette.primary.main}`
-							}}
-						/>
-					</Box>
+					/>
 				</Grid>
 				<Grid size={{ xs: 12, md: 6 }}>
 					<Typography variant="h1" component="h1" gutterBottom>

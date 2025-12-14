@@ -1,8 +1,6 @@
-import React, { ChangeEvent, useState } from 'react';
+import React, { ChangeEvent, useEffect, useState } from 'react';
 import { FC } from 'react';
-import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
-import Divider from '@mui/material/Divider';
 import FormLabel from '@mui/material/FormLabel';
 import FormControl from '@mui/material/FormControl';
 import TextField from '@mui/material/TextField';
@@ -12,10 +10,11 @@ import MuiCard from '@mui/material/Card';
 import { styled } from '@mui/material/styles';
 import { ILoginRequest } from '../../../store/user/userTypes';
 import { useLoginUserMutation } from '../../../store/user/userApi';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { loginUser } from '../../../store/user/userSlice';
-import { Link, useNavigate } from 'react-router';
+import { useNavigate } from 'react-router';
 import { Alert } from '@mui/material';
+import { TypeRootState } from '../../../store/store';
 
 const Card = styled(MuiCard)(({ theme }) => ({
 	display: 'flex',
@@ -66,9 +65,17 @@ const Auth: FC = (props: { disableCustomTheme?: boolean }) => {
 	});
 	const [formError, setFormError] = useState<string | null>(null);
 
+	const { isAuthenticated, isLoading: isUserLoading } = useSelector((state: TypeRootState) => state.user);
 	const [login, { isLoading, error }] = useLoginUserMutation();
 	const dispatch = useDispatch();
 	const navigate = useNavigate();
+	
+
+  useEffect(() => {
+    if (isAuthenticated && !isUserLoading) {
+      navigate('/', { replace: true });
+    }
+  }, [isAuthenticated, isLoading, navigate]);
 
 	const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
 		const { name, value } = e.target;
@@ -148,13 +155,11 @@ const Auth: FC = (props: { disableCustomTheme?: boolean }) => {
 					</Alert>
 				)}
 
-				<Box
+				<Stack
 					component="form"
 					onSubmit={handleSubmit}
 					noValidate
 					sx={{
-						display: 'flex',
-						flexDirection: 'column',
 						width: '100%',
 						gap: 2
 					}}
@@ -202,13 +207,7 @@ const Auth: FC = (props: { disableCustomTheme?: boolean }) => {
 					>
 						Sign in
 					</Button>
-				</Box>
-				<Divider>or</Divider>
-				<Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
-					<Button type="button" component={Link} to={'/'} disabled={isLoading}>
-						Check catalog
-					</Button>
-				</Box>
+				</Stack>
 			</Card>
 		</SignInContainer>
 	);
