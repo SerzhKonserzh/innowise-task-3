@@ -114,6 +114,7 @@ const CatalogPage = () => {
 								value={category}
 								onChange={e => setCategory(e.target.value)}
 								labelId="category-label"
+								label = 'Category'
 							>
 								<MenuItem value="">All</MenuItem>
 								{categoriesData?.map(cat => (
@@ -133,6 +134,7 @@ const CatalogPage = () => {
 								onChange={e => setSortBy(e.target.value)}
 								aria-label='Select parameter to sort'
 								labelId="sort-label"
+								label = 'Sort'
 							>
 								<MenuItem value="title">By name</MenuItem>
 								<MenuItem value="price">By price</MenuItem>
